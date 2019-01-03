@@ -1,0 +1,28 @@
+{
+  "name": "bezier-experiment",
+  "version": "1.0.0",
+  "description": "Personal exploration of Cubic Bezier curves",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack",
+    "start:dev": "webpack-dev-server --hot --config ./webpack.dev.js"
+  },
+  "keywords": [
+    "curves",
+    "canvas"
+  ],
+  "author": "Brandon Blanchard",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/runtime": "^7.2.0",
+    "@webpack-cli/init": "^0.1.2",
+    "babel-loader": "^8.0.4",
+    "webpack": "^4.28.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
+  }
+}
