@@ -5,12 +5,14 @@ export default class CurveApplication {
         if(!canvas2d) { throw new error('CurveApplication missing parameter \'canvas2d\''); }
 
         this.canvas2d = canvas2d;
-
         this.points = [];
 
         for(let i = 0; i < 4; i += 1) {
             this.points.push(this.canvas2d.addPoint(Math.random() * window.innerWidth, Math.random() * window.innerHeight));
         }
+
+        this.animPoint = { id: this.canvas2d.addPoint(0,0), currentStep: 0, stepDir: 1, point: null };
+        this.animPoint.point = this.canvas2d.getPoint(this.animPoint.id);
 
         this.canvas2d.addLine(this.points[0], this.points[1]);
         this.canvas2d.addLine(this.points[1], this.points[2]);
@@ -25,12 +27,6 @@ export default class CurveApplication {
         addEventListener('mousedown', this.handleMouseDown.bind(this));
         addEventListener('mousemove', this.handleMouseMove.bind(this));
         addEventListener('mouseup', this.handleMouseUp.bind(this));
-    }
-
-    // Setup
-    init () {
-        // Create 4 points
-        // Make them movable
     }
 
      // Grab point below mouse if exists and set as current selection
@@ -71,8 +67,12 @@ export default class CurveApplication {
         let xVals = [];
         let yVals = [];
 
+        // Draw Bezier //
+
         // Takes the array of points and turns them into two arrays of component values
-        this.canvas2d.points.forEach( point => {
+        this.points.forEach( id => {
+            const point = this.canvas2d.getPoint(id);
+
             xVals.push(point.x);
             yVals.push(point.y);
         });
@@ -94,5 +94,28 @@ export default class CurveApplication {
         ctx.lineTo(xVals[xVals.length -1], yVals[yVals.length -1]);
 
         ctx.stroke();
+
+        // Animate point along line //
+
+        // If the point has hit the end, send it back towards the beginning.
+        if(this.animPoint.stepDir > 0 && this.animPoint.currentStep > 1){
+            this.animPoint.currentStep = 1;
+            this.animPoint.stepDir = -1;
+        }
+
+        // If the point has hit the start, send it back towards the end.
+        if(this.animPoint.stepDir < 0 && this.animPoint.currentStep < 0) {
+            this.animPoint.currentStep = 0;
+            this.animPoint.stepDir = 1;
+        }
+
+        this.animPoint.currentStep += step * this.animPoint.stepDir;
+
+        // Translate the point to the next step on line
+        this.animPoint.point.x = Bezier.QuadraticBezier(xVals, this.animPoint.currentStep);
+        this.animPoint.point.y = Bezier.QuadraticBezier(yVals, this.animPoint.currentStep);
+
+
+        
     }
 }

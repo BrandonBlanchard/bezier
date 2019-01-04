@@ -32,12 +32,6 @@ export default class Canvas2d {
        
         return id;
     }
-
-    // parameters: int id, float x, float y
-    // returns null
-    movePoint (id, x, y) {
-        
-    }
     
     getPoint (id) {
         let result;
