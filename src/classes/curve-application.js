@@ -6,7 +6,7 @@ export default class CurveApplication {
 
         this.canvas2d = canvas2d;
         this.points = [];
-
+        
         for(let i = 0; i < 4; i += 1) {
             this.points.push(this.canvas2d.addPoint(Math.random() * window.innerWidth, Math.random() * window.innerHeight));
         }
@@ -14,9 +14,9 @@ export default class CurveApplication {
         this.animPoint = { id: this.canvas2d.addPoint(0,0), currentStep: 0, stepDir: 1, point: null };
         this.animPoint.point = this.canvas2d.getPoint(this.animPoint.id);
 
-        this.canvas2d.addLine(this.points[0], this.points[1]);
-        this.canvas2d.addLine(this.points[1], this.points[2]);
-        this.canvas2d.addLine(this.points[2], this.points[3]);
+        for(let i = 0; i < this.points.length && i + 1 < this.points.length; i += 1) {
+            this.canvas2d.addLine(this.points[i], this.points[i + 1]);
+        }    
 
         this.isDragging = false;
         // Point id
@@ -94,6 +94,8 @@ export default class CurveApplication {
         ctx.lineTo(xVals[xVals.length -1], yVals[yVals.length -1]);
 
         ctx.stroke();
+
+
 
         // Animate point along line //
 
